@@ -2,6 +2,18 @@
 
 @layer base {
   :root {
+    --bg-canvas: #F8FAFC;
+    --bg-surface: #FFFFFF;
+    --border-ink: #CBD5E1;
+    --text-primary: #0F172A;
+    --accent-primary: #EA580C;
+    --accent-navy: #0F172A;
+    --accent-amber: #D97706;
+    --accent-emerald: #059669;
+    --accent-rose: #DC2626;
+  }
+
+  .dark {
     --bg-canvas: #090E17;
     --bg-surface: #111827;
     --border-ink: #334155;
@@ -15,8 +27,6 @@
 
   body {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: #090E17;
-    color: #F8FAFC;
     overflow-x: hidden;
   }
 
@@ -30,8 +40,16 @@
   }
 }
 
-/* Civic-Tech Geometric Cards in Dark Mode */
+/* Civic-Tech Geometric Cards in Light & Dark Mode */
 .civic-card {
+  background-color: #FFFFFF;
+  border: 2px solid #CBD5E1;
+  box-shadow: 3px 3px 0px #94A3B8;
+  color: #0F172A;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.dark .civic-card {
   background-color: #111827;
   border: 2px solid #1E293B;
   box-shadow: 3px 3px 0px #030712;
@@ -39,6 +57,13 @@
 }
 
 .civic-card-dashed {
+  background-color: #FFFFFF;
+  border: 2px dashed #94A3B8;
+  box-shadow: 3px 3px 0px #CBD5E1;
+  color: #0F172A;
+}
+
+.dark .civic-card-dashed {
   background-color: #111827;
   border: 2px dashed #334155;
   box-shadow: 3px 3px 0px #030712;
@@ -47,19 +72,35 @@
 
 /* Tactile Buttons */
 .civic-btn {
+  border: 2px solid #CBD5E1;
+  box-shadow: 2px 2px 0px #94A3B8;
+  transition: all 0.1s ease-in-out;
+}
+
+.dark .civic-btn {
   border: 2px solid #334155;
   box-shadow: 2px 2px 0px #030712;
-  transition: all 0.1s ease-in-out;
 }
 
 .civic-btn:hover {
   transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0px #030712;
 }
 
 .civic-btn:active {
   transform: translate(1px, 1px);
-  box-shadow: 1px 1px 0px #030712;
+}
+
+/* 3D Perspective & Spatial Classes */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
 }
 
 /* Transit Line Accent */

@@ -7,17 +7,22 @@ import {
   Languages, 
   FileSearch,
   Layers,
-  Scale
+  Scale,
+  Sun,
+  Moon,
+  Home
 } from 'lucide-react';
 import { LanguageCode, SUPPORTED_LANGUAGES } from '../types/contract';
 
-export type AppTab = 'auditor' | 'translator' | 'vault' | 'rights';
+export type AppTab = 'home' | 'auditor' | 'translator' | 'rights';
 
 interface HeaderProps {
   selectedLanguage: LanguageCode;
   onLanguageChange: (lang: LanguageCode) => void;
   activeTab: AppTab;
   onSelectTab: (tab: AppTab) => void;
+  theme: 'dark' | 'light';
+  onToggleTheme: () => void;
   onOpenHelp: () => void;
   onToggleAudio?: () => void;
   isPlayingAudio?: boolean;
@@ -29,20 +34,24 @@ export const Header: React.FC<HeaderProps> = ({
   onLanguageChange,
   activeTab,
   onSelectTab,
+  theme,
+  onToggleTheme,
   onOpenHelp,
   onToggleAudio,
   isPlayingAudio,
   hasAnalysis = false,
 }) => {
+  const isDark = theme === 'dark';
+
   return (
     <header className="sticky top-0 z-40 w-full shadow-xs">
       {/* Top Header Bar */}
-      <div className="bg-[#0B132B] text-white border-b-2 border-slate-900 px-3 sm:px-6 lg:px-8">
+      <div className="bg-[#0B132B] dark:bg-[#0B132B] text-white border-b-2 border-slate-900 px-3 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex items-center justify-between h-13 sm:h-15">
-          {/* Logo */}
+          {/* Logo / Brand Zone */}
           <div className="flex items-center gap-2">
             <button 
-              onClick={() => onSelectTab('auditor')}
+              onClick={() => onSelectTab('home')}
               className="flex items-center gap-1.5 sm:gap-2 group cursor-pointer focus:outline-hidden text-left"
             >
               <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xs bg-[#FF7700] border-2 border-black flex items-center justify-center text-slate-950 font-black text-xs sm:text-sm shadow-[2px_2px_0px_#000] shrink-0">
@@ -62,6 +71,16 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Center Navigation Links (Tabs) */}
           <nav className="hidden md:flex items-center gap-6 text-xs font-mono font-bold text-slate-300">
             <button 
+              onClick={() => onSelectTab('home')}
+              className={`hover:text-[#FF7700] transition-colors cursor-pointer flex items-center gap-1.5 pb-1 ${
+                activeTab === 'home' ? 'text-[#FF7700] border-b-2 border-[#FF7700]' : ''
+              }`}
+            >
+              <Home className="w-3.5 h-3.5" />
+              <span>Home</span>
+            </button>
+
+            <button 
               onClick={() => onSelectTab('auditor')}
               className={`hover:text-[#FF7700] transition-colors cursor-pointer flex items-center gap-1.5 pb-1 ${
                 activeTab === 'auditor' ? 'text-[#FF7700] border-b-2 border-[#FF7700]' : ''
@@ -78,17 +97,7 @@ export const Header: React.FC<HeaderProps> = ({
               }`}
             >
               <Languages className="w-3.5 h-3.5 text-[#10B981]" />
-              <span>Voice Translator</span>
-            </button>
-
-            <button 
-              onClick={() => onSelectTab('vault')}
-              className={`hover:text-[#38BDF8] transition-colors cursor-pointer flex items-center gap-1.5 pb-1 ${
-                activeTab === 'vault' ? 'text-[#38BDF8] border-b-2 border-[#38BDF8]' : ''
-              }`}
-            >
-              <Layers className="w-3.5 h-3.5 text-[#38BDF8]" />
-              <span>Contract Vault</span>
+              <span>Voice AI Translator</span>
             </button>
 
             <button 
@@ -98,16 +107,30 @@ export const Header: React.FC<HeaderProps> = ({
               }`}
             >
               <Scale className="w-3.5 h-3.5 text-[#F59E0B]" />
-              <span>Worker Rights</span>
+              <span>Worker Rights & Law</span>
             </button>
           </nav>
 
           {/* Right Action Zone */}
           <div className="flex items-center gap-2">
-            {/* Quick Translator Toggle Button */}
+            {/* Theme Toggle Button (Light Mode / Dark Mode) */}
+            <button
+              onClick={onToggleTheme}
+              className="p-1.5 rounded-xs border-2 border-slate-700 bg-[#172545] hover:bg-[#203258] text-amber-300 hover:text-amber-200 cursor-pointer shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 transition-all flex items-center justify-center"
+              title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              aria-label="Toggle theme"
+            >
+              {isDark ? (
+                <Sun className="w-4 h-4 text-amber-400" />
+              ) : (
+                <Moon className="w-4 h-4 text-cyan-300" />
+              )}
+            </button>
+
+            {/* Quick Action to Voice AI */}
             <button
               onClick={() => onSelectTab('translator')}
-              className={`inline-flex items-center gap-1 px-2.5 py-1 sm:py-1.5 rounded-xs font-mono font-bold text-xs border-2 border-black shadow-[2px_2px_0px_#000] cursor-pointer transition-all ${
+              className={`hidden sm:inline-flex items-center gap-1 px-2.5 py-1 sm:py-1.5 rounded-xs font-mono font-bold text-xs border-2 border-black shadow-[2px_2px_0px_#000] cursor-pointer transition-all ${
                 activeTab === 'translator' 
                   ? 'bg-[#10B981] text-slate-950 ring-2 ring-emerald-400' 
                   : 'bg-[#10B981] hover:bg-[#12C288] text-slate-950'
@@ -115,7 +138,7 @@ export const Header: React.FC<HeaderProps> = ({
               title="Open Voice & Text Translator"
             >
               <Languages className="w-3.5 h-3.5" />
-              <span>Translate</span>
+              <span>Voice AI</span>
             </button>
 
             {/* Language Selector */}
@@ -134,15 +157,6 @@ export const Header: React.FC<HeaderProps> = ({
                 ))}
               </select>
             </div>
-
-            {/* Rights Button */}
-            <button
-              onClick={() => onSelectTab('rights')}
-              className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 sm:py-1.5 rounded-xs bg-[#FF7700] hover:bg-[#FF881A] text-slate-950 font-mono font-bold text-xs border-2 border-black shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 transition-all cursor-pointer"
-            >
-              <HelpCircle className="w-3.5 h-3.5 text-slate-950" />
-              <span>Rights</span>
-            </button>
           </div>
         </div>
       </div>
@@ -158,7 +172,9 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse shrink-0" />
             <span className="font-bold truncate">Bhasha AI Production Workspace</span>
             <span className="text-slate-600 hidden md:inline">•</span>
-            <span className="text-slate-400 hidden md:inline">Separate Tabs for Contract Audit, Voice AI, Legal Vault & Worker Rights</span>
+            <span className="text-slate-400 hidden md:inline">
+              {isDark ? 'Dark Mode' : 'Light Mode'} • 3D Spatial Graphics • 22+ Languages
+            </span>
           </div>
 
           {/* Quick Audio Play Pill (Only shown when analysis is loaded) */}

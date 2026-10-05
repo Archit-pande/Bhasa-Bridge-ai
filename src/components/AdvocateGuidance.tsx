@@ -24,9 +24,10 @@ export const AdvocateGuidance: React.FC<AdvocateGuidanceProps> = ({ analysis }) 
   const isNonContract = isAcademic || isTechnical || analysis.documentType === 'other';
 
   const handleCopySummary = () => {
+    const exposureStatus = analysis.redFlagsCount > 0 ? 'CRITICAL EXPOSURE (Red Flags Found)' : analysis.cautionCount > 0 ? 'CAUTION (Conditional Terms)' : 'BALANCED (Protected)';
     const text = isAcademic
-      ? `📋 *Bhasha Bridge Academic Assignment Report*\n\nDocument: ${analysis.documentTitle}\nFairness / Clarity: ${analysis.safetyScore}/100\n\n📌 Key Tasks:\n${analysis.clauses.map(c => `• ${c.title}`).join('\n')}\n\n❓ Questions to clarify with Instructor:\n${analysis.workerQuestionsToAsk.map((q) => `• ${q}`).join('\n')}\n\n_Decoded with Bhasha Bridge AI_`
-      : `📋 *Bhasha Bridge Document Safety Report*\n\nPlatform: ${analysis.platformName}\nDocument: ${analysis.documentTitle}\nSafety Score: ${analysis.safetyScore}/100\n\n⚠️ Red Flags: ${analysis.redFlagsCount}\n🟡 Caution Points: ${analysis.cautionCount}\n\n🔍 Summary:\n${analysis.summary}\n\n❓ Questions to ask:\n${analysis.workerQuestionsToAsk.map((q) => `• ${q}`).join('\n')}\n\n_Decoded with Bhasha Bridge AI_`;
+      ? `📋 *Bhasha Bridge Academic Assignment Report*\n\nDocument: ${analysis.documentTitle}\nStatus: ${exposureStatus}\n\n📌 Key Tasks:\n${analysis.clauses.map(c => `• ${c.title}`).join('\n')}\n\n❓ Questions to clarify with Instructor:\n${analysis.workerQuestionsToAsk.map((q) => `• ${q}`).join('\n')}\n\n_Decoded with Bhasha Bridge AI_`
+      : `📋 *Bhasha Bridge Gig Worker Contract Audit*\n\nPlatform: ${analysis.platformName}\nDocument: ${analysis.documentTitle}\nProtection Status: ${exposureStatus}\n\n🚨 Critical Traps: ${analysis.redFlagsCount}\n⚠️ Ambiguous Terms: ${analysis.cautionCount}\n🛡️ Protected Clauses: ${analysis.safeCount}\n\n🔍 Impact Summary:\n${analysis.summary}\n\n❓ Action Questions for Platform Manager:\n${analysis.workerQuestionsToAsk.map((q) => `• ${q}`).join('\n')}\n\n_Decoded with Bhasha Bridge AI_`;
 
     navigator.clipboard.writeText(text).then(() => {
       setCopiedSummary(true);
