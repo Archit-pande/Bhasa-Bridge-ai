@@ -1,0 +1,10 @@
+{
+  "name": "Remix Bhasha Bridge for Gig Workers",
+  "description": "AI-powered civic-fintech tool decoding complex contracts, platform policies, and payout statements into plain spoken-language insights with visual risk analysis for delivery riders, drivers, and daily wage workers.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
